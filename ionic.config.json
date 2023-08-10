@@ -1,0 +1,7 @@
+{
+  "name": "cap-sqlite-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
