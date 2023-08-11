@@ -5,11 +5,20 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "start": "npm run copy:sql:wasm && ng serve",
+    "build:web": "npm run copy:sql:wasm && ng build",
+    "build:native": "npm run remove:sql:wasm && ng build",
+    "watch": "npm run copy:sql:wasm && ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "ionic:serve:before": "npm run copy:sql:wasm",
+    "copy:sql:wasm": "copyfiles -u 3 node_modules/sql.js/dist/sql-wasm.wasm src/assets",
+    "remove:sql:wasm": "rimraf src/assets/sql-wasm.wasm",
+    "ionic:ios": "npm run remove:sql:wasm && ionic capacitor build ios",
+    "ionic:android": "npm run remove:sql:wasm && ionic capacitor build android",
+    "electron:install": "cd electron && npm install && cd ..",
+    "electron:prepare": "npm run remove:sql:wasm && ng build && npx cap sync @capacitor-community/electron && npx cap copy @capacitor-community/electron",
+    "electron:start": "npm run electron:prepare && cd electron && npm run electron:start"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +30,8 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
+    "@capacitor-community/sqlite": "^5.0.7-1",
+    "@capacitor/android": "5.2.2",
     "@capacitor/app": "5.0.6",
     "@capacitor/core": "5.2.2",
     "@capacitor/haptics": "5.0.6",

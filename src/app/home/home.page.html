@@ -1,20 +1,57 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Ionic SQLite CRUD Example</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+<ion-content>
+  <ion-list lines="full">
+    <form [formGroup]="mainForm" (ngSubmit)="storeData()">
+      <ion-item>
+        <ion-input
+          label="Artist name"
+          formControlName="artist"
+          type="text"
+          required
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          label="Song name"
+          formControlName="song"
+          type="text"
+          required
+        >
+        </ion-input>
+      </ion-item>
+      <ion-row>
+        <ion-col>
+          <ion-button type="submit" color="primary" shape="full" expand="block">
+            Add Song
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-list>
+  <ion-list>
+    <ion-list-header> Songs </ion-list-header>
+    <ion-item lines="inset" *ngFor="let data of Data">
+      <ion-label>
+        <h5>{{data.artist_name}}</h5>
+        <p *ngIf="data.stars">{{data.song_name}} - {{data.stars}} stars</p>
+        <p *ngIf="!data.stars">{{data.song_name}}</p>
+      </ion-label>
+      <div class="item-note" item-end>
+        <ion-icon
+          name="create"
+          style="zoom: 2"
+          [routerLink]="['/song/', data.id]"
+        ></ion-icon>
+        <ion-icon
+          name="trash"
+          style="zoom: 2"
+          (click)="deleteSong(data.id)"
+        ></ion-icon>
+      </div>
+    </ion-item>
+  </ion-list>
 </ion-content>
